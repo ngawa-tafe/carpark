@@ -11,5 +11,6 @@ class Sensor:
 class EntrySensor(Sensor):
     ...
 
+
 class ExitSensor(Sensor):
     ...
