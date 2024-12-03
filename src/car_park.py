@@ -1,5 +1,5 @@
 from sensor import Sensor
-from display import  Display
+from display import Display
 
 
 class CarPark:
@@ -22,3 +22,20 @@ class CarPark:
             else:
                 self.displays.append(component)
 
+    def update_displays(self):
+        data = {"available_bays": self.available_bays, "temperature": 25}
+        for display in self.display:
+            display.update(data)
+
+    def add_car(self, plate):
+        self.plates.append(plate)
+
+    def remove_car(self, plate):
+        self.plates.remove(plate)
+
+    @property
+    def available_bays(self):
+        if self.capacity - len(self.plates) < 0:
+            return 0
+        else:
+            return self.capacity - len(self.plates)
