@@ -17,3 +17,7 @@ class TestDisplay(unittest.TestCase):
     def test_update(self):
         self.display.update({"message": "Goodbye"})
         self.assertEqual(self.display.message, "Goodbye")
+
+
+if __name__ == "__main__":
+    unittest.main()
