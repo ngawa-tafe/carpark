@@ -94,6 +94,7 @@ class TestCarPark(unittest.TestCase):
     def tearDown(self):
         Path(self.log_file).unlink(missing_ok=True)
         Path("log.txt").unlink(missing_ok=True)
+        Path(self.car_park.config_file).unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
