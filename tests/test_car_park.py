@@ -1,6 +1,7 @@
 import unittest
 from pathlib import Path
 from car_park import CarPark
+import json
 
 
 class TestCarPark(unittest.TestCase):
@@ -55,7 +56,8 @@ class TestCarPark(unittest.TestCase):
 
     # inside the TestCarPark class
     def test_car_logged_when_entering(self):
-        new_carpark = CarPark("123 Example Street", 100, log_file=self.log_file)  # TODO: change this to use a class attribute or new instance variable
+        new_carpark = CarPark("123 Example Street", 100,
+                              log_file=self.log_file)  # TODO: change this to use a class attribute or new instance variable
         self.car_park.add_car("NEW-001")
         with self.car_park.log_file.open() as f:
             last_line = f.readlines()[-1]
@@ -64,7 +66,8 @@ class TestCarPark(unittest.TestCase):
         self.assertIn("\n", last_line)  # check entry has a new line
 
     def test_car_logged_when_exiting(self):
-        new_carpark = CarPark("123 Example Street", 100, log_file=self.log_file) # TODO: change this to use a class attribute or new instance variable
+        new_carpark = CarPark("123 Example Street", 100,
+                              log_file=self.log_file)  # TODO: change this to use a class attribute or new instance variable
         self.car_park.add_car("NEW-001")
         self.car_park.remove_car("NEW-001")
         with self.car_park.log_file.open() as f:
@@ -72,6 +75,21 @@ class TestCarPark(unittest.TestCase):
         self.assertIn("NEW-001", last_line)  # check plate entered
         self.assertIn("exited", last_line)  # check description
         self.assertIn("\n", last_line)  # check entry has a new line
+
+    def test_write_config(self):
+        self.car_park.write_config()
+        with open("config.json") as f:
+            config = json.load(f)
+        self.assertEqual(config["location"], self.car_park.location)
+        self.assertEqual(config["capacity"], self.car_park.capacity)
+        self.assertEqual(config["log_file"], str(self.car_park.log_file))
+
+    def test_from_config(self):
+        self.car_park.write_config()
+        loaded_car_park = CarPark.from_config()
+        self.assertEqual(loaded_car_park.location, self.car_park.location)
+        self.assertEqual(loaded_car_park.capacity, self.car_park.capacity)
+        self.assertEqual(loaded_car_park.log_file, self.car_park.log_file)
 
     def tearDown(self):
         Path(self.log_file).unlink(missing_ok=True)
