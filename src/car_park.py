@@ -24,7 +24,7 @@ class CarPark:
 
     def update_displays(self):
         data = {"available_bays": self.available_bays, "temperature": 25}
-        for display in self.display:
+        for display in self.displays:
             display.update(data)
 
     def add_car(self, plate):
