@@ -6,6 +6,13 @@ class Display:
         self.car_park = car_park
 
     def update(self, data):
+        """
+
+        updates the message if the value of key of the dictionary is "message",
+        else prints the key,value
+        :param data: dict
+        :return: null
+        """
         for key, value in data.items():
             if key == "message":
                 self.message = value

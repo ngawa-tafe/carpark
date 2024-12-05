@@ -22,6 +22,14 @@ class CarPark:
         return f"Location: {self.location}, Capacity: {self.capacity}"
 
     def register(self, component):
+        """
+
+        registers a component to car park by appending to a list of sensors or displays,
+        raises error if component is not an instance of Sensor or Display class.
+        :param component: Any
+        :return: null
+        """
+
         if not isinstance(component, (Sensor, Display)):
             raise TypeError("Object must be a Sensor or Display")
         else:
@@ -31,16 +39,33 @@ class CarPark:
                 self.displays.append(component)
 
     def update_displays(self):
+        """
+
+        updates the display to display available bays and temperature.
+        :return: null
+        """
         data = {"available_bays": self.available_bays, "temperature": 25}
         for display in self.displays:
             display.update(data)
 
     def add_car(self, plate):
+        """
+
+        Adds a plate to the list of plates, updates display and logs car activity.
+        :param plate: str
+        :return: null
+        """
         self.plates.append(plate)
         self.update_displays()
         self._log_car_activity(plate, "entered")
 
     def remove_car(self, plate):
+        """
+
+        Removes a plate to the list of plates, updates display and logs car activity.
+        :param plate:
+        :return: str
+        """
         self.plates.remove(plate)
         self.update_displays()
         self._log_car_activity(plate, "exited")
@@ -53,10 +78,21 @@ class CarPark:
             return self.capacity - len(self.plates)
 
     def _log_car_activity(self, plate, action):
+        """
+
+        logs a car activity with plate, action and datetime information.
+        :param plate: str,
+        :param action: str
+        :return: null
+        """
         with self.log_file.open("a") as log_file:
             log_file.write(f"{plate} {action} at {datetime.now():%Y-%m-%d %H:%M:%S}\n")
 
     def write_config(self):
+        """
+        writes the config file to disk.
+        :return: null
+        """
         with self.config_file.open("w") as config_file:
             json.dump({"location": self.location,
                        "capacity": self.capacity,
@@ -64,6 +100,11 @@ class CarPark:
 
     @classmethod
     def from_config(cls, config_file=Path("config.json")):
+        """
+        Reads the config file and returns a configured class.
+        :param config_file: pathlib.Path
+        :return: CarPark
+        """
         config_file = config_file if isinstance(config_file, Path) else Path(config_file)
         with config_file.open() as f:
             config = json.load(f)
