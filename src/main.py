@@ -15,6 +15,11 @@ def main():
 
     # TODO: create a display object with id 1, message "Welcome to Moondalup", is_on True, and car_park car_park
     display = Display(id=1, message="Welcome to Moondalup", is_on=True, car_park=car_park)
+    car_park.register(display)
+    car_park.register(entry_sensor)
+    car_park.register(exit_sensor)
+
+    print(display)
 
     # TODO: drive 10 cars into the car park (must be triggered via the sensor - NOT by calling car_park.add_car directly)
     for i in range(10):
